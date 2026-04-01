@@ -9,13 +9,29 @@ class PostSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'user', 'image', 'created_at', 'updated_at', 'hashtags']
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    
     class Meta:
         model = Comment
-        fields = ['id', 'post', 'user', 'text', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'text', 'post', 'created_at', 'updated_at']
         read_only_fields = ['id', 'post', 'user', 'created_at', 'updated_at']
     
+    def get_user(self, obj):
+        return {
+            'id': obj.user.id,
+            'username': obj.user.username
+        }
+    
 class LikeSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    
     class Meta:
         model = Like
-        fields = ['id', 'post', 'user', 'created_at']
+        fields = ['id', 'user', 'post', 'created_at']
         read_only_fields = ['id', 'post', 'user', 'created_at']
+    
+    def get_user(self, obj):
+        return {
+            'id': obj.user.id,
+            'username': obj.user.username
+        }

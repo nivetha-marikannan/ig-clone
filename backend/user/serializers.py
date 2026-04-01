@@ -39,33 +39,6 @@ class RegisterSerializer(serializers.Serializer):
             
             return user
 
-class LogoutSerializer(serializers.Serializer):
-    
-    refresh = serializers.CharField()
-    
-    def validate_refresh(self, value):
-        from rest_framework_simplejwt.tokens import RefreshToken
-        from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-        
-        try:
-            RefreshToken(value)
-        except (InvalidToken, TokenError):
-            raise serializers.ValidationError("Invalid refresh token.")
-        
-        return value
-    
-    def save(self):
-        from rest_framework_simplejwt.tokens import RefreshToken
-        from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
-        
-        refresh_token = self.validated_data['refresh']
-        token = RefreshToken(refresh_token)
-        
-        token.blacklist()
-        
-        return {"message": "Successfully logged out"}
-
-
 class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
@@ -74,3 +47,49 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'is_private', 'dob', 'created_at']
         read_only_fields = ['id', 'created_at']
+
+
+class FollowUserSerializer(serializers.Serializer):
+    
+    def validate(self, data):
+        
+        request = self.context.get('request')
+        if not request:
+            raise serializers.ValidationError("Request context required")
+        
+        user_id = self.context.get('user_id')
+        
+        if not user_id:
+            raise serializers.ValidationError("User ID required")
+        
+        try:
+            target_user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("Target user not found")
+        
+        if request.user.id == target_user.id:
+            raise serializers.ValidationError("Cannot follow yourself")
+        
+        return data
+
+
+class FollowersListSerializer(serializers.ModelSerializer):
+    
+    is_following = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'is_following']
+    
+    def get_is_following(self, obj):
+        
+        from .models import Follow
+        request = self.context.get('request')
+        
+        if not request or not request.user.is_authenticated:
+            return False
+        
+        return Follow.objects.filter(
+            follower=request.user,
+            following=obj
+        ).exists()
