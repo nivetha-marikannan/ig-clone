@@ -1,0 +1,375 @@
+/*
+  Feed Layout
+  Centers all post cards in a single column, max 600px wide (like Instagram).
+  The light gray background separates cards visually from the page.
+*/
+.feed-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  background: #fafafa;
+}
+
+/*
+  Feed Header
+  Shows "Feed" title and logout button in a row, spaced apart.
+  Sticky so it stays visible while scrolling.
+*/
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid #dbdbdb;
+  position: sticky;
+  top: 0;
+  background: #fafafa;
+  z-index: 10;
+}
+
+.feed-header h1 {
+  font-size: 24px;
+  color: #262626;
+  margin: 0;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  background: none;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #262626;
+}
+
+.logout-btn:hover {
+  background: #efefef;
+}
+
+/*
+  Post Card
+  White card with a subtle border, just like Instagram's post cards.
+  margin-bottom separates each card.
+*/
+.post-card {
+  background: white;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+/*
+  Post Header
+  Shows the username on the left and the time on the right.
+  Padding gives breathing room inside the card.
+*/
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.post-username {
+  font-weight: 600;
+  font-size: 14px;
+  color: #262626;
+}
+
+.post-time {
+  font-size: 12px;
+  color: #8e8e8e;
+}
+
+/*
+  Post Image
+  width: 100% makes it fill the card width.
+  display: block removes the small gap that inline images have below them.
+  max-height prevents absurdly tall images from dominating the feed.
+  object-fit: cover crops the image to fill the space without stretching.
+*/
+.post-image {
+  width: 100%;
+  display: block;
+  max-height: 600px;
+  object-fit: cover;
+}
+
+/*
+  Post Actions
+  The row of buttons (like, comment) below the image.
+*/
+.post-actions {
+  display: flex;
+  gap: 12px;
+  padding: 8px 16px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 4px;
+  color: #262626;
+  transition: transform 0.15s;
+}
+
+.action-btn:hover {
+  transform: scale(1.1);
+}
+
+/* When a post is liked, the heart turns red */
+.action-btn.liked {
+  color: #ed4956;
+}
+
+/*
+  Post Info
+  The section below actions: likes count, caption, comments.
+  Padding keeps text away from the card edges.
+*/
+.post-info {
+  padding: 0 16px 12px;
+}
+
+.likes-count {
+  font-weight: 600;
+  font-size: 14px;
+  color: #262626;
+  margin-bottom: 6px;
+}
+
+.post-caption {
+  font-size: 14px;
+  color: #262626;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.post-caption .caption-username {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+/*
+  Comments Preview
+  Shows 2 most recent comments, plus a "View all X comments" link.
+*/
+.view-all-comments {
+  font-size: 14px;
+  color: #8e8e8e;
+  cursor: pointer;
+  margin-bottom: 6px;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.view-all-comments:hover {
+  color: #262626;
+}
+
+.comment-item {
+  font-size: 14px;
+  color: #262626;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.comment-item .comment-username {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+/*
+  Add Comment
+  An input and button at the bottom of each card.
+*/
+.add-comment {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-top: 1px solid #efefef;
+}
+
+.add-comment input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.add-comment input::placeholder {
+  color: #8e8e8e;
+}
+
+.add-comment button {
+  background: none;
+  border: none;
+  color: #0095f6;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.add-comment button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/*
+  Create Post Form
+  A card at the top of the feed where users can upload an image and write a caption.
+  Same white card style as post cards for visual consistency.
+*/
+.create-post-card {
+  background: white;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 16px;
+}
+
+.create-post-card h3 {
+  margin: 0 0 14px 0;
+  font-size: 16px;
+  color: #262626;
+}
+
+/*
+  File Input
+  The default HTML file input is ugly. We style its container instead.
+  The dashed border + light background hints "drop something here".
+  Clicking anywhere in this area opens the file picker.
+*/
+.file-input-wrapper {
+  position: relative;
+  border: 2px dashed #dbdbdb;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  background: #fafafa;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+.file-input-wrapper:hover {
+  border-color: #8e8e8e;
+}
+
+/*
+  Hide the native file input visually but keep it functional.
+  It's stretched to fill the wrapper via absolute positioning,
+  so clicking anywhere on the wrapper triggers the file dialog.
+*/
+.file-input-wrapper input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-input-label {
+  color: #8e8e8e;
+  font-size: 14px;
+}
+
+/*
+  Image Preview
+  After selecting a file, show a small preview so the user
+  can verify they picked the right image before posting.
+*/
+.image-preview {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+/*
+  Caption Textarea
+  Resizable vertically (resize: vertical) but not horizontally
+  so it doesn't break the card layout.
+  font-family: inherit uses the same font as the rest of the page
+  instead of the default monospace textarea font.
+*/
+.caption-input {
+  width: 100%;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.caption-input:focus {
+  outline: none;
+  border-color: #8e8e8e;
+}
+
+/*
+  Submit Button
+  Blue background matching Instagram's accent color.
+  Full width so it's easy to click.
+*/
+.create-post-btn {
+  width: 100%;
+  padding: 10px;
+  background: #0095f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.create-post-btn:hover:not(:disabled) {
+  background: #0081d6;
+}
+
+.create-post-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.create-post-error {
+  color: #ed4956;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/* Loading and empty states */
+.feed-loading,
+.feed-empty {
+  text-align: center;
+  padding: 40px;
+  color: #8e8e8e;
+  font-size: 16px;
+}
+
+.feed-error {
+  text-align: center;
+  padding: 20px;
+  color: #ed4956;
+  background: #fff0f0;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
